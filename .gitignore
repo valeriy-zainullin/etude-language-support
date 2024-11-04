@@ -5,3 +5,4 @@ node_modules
 *.vsix
 user_data/
 ext_root/
+etuded/

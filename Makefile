@@ -9,13 +9,19 @@ all: package.vsix
 log: ./ext_root
 	bash -c 'cat ./ext_root/valeriy-zainullin.etude-language-support-*/lsp-server/log.txt'
 
-lsp-server/server: lsp-server/server.cpp
-	g++ -o $@ $<
+etuded/build:
+	cmake -B etuded/build etuded
+
+etuded/build/server: | etuded/build
+	$(MAKE) -C etuded/build
+
+etuded/server: etuded/build/server
+	cp $< $@
 
 # Не хочется каждый раз ждать eslint,
 #   потому пусть запускается только если важные
 #   файлы поменялись (те, которые мы изменяем пока).
-package.vsix: package.json src/extension.ts lsp-server/server
+package.vsix: package.json src/extension.ts etuded/server
 	vsce package -o $@
 
 clean:

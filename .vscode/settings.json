@@ -62,6 +62,17 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
-    }
+        "typeinfo": "cpp",
+        "condition_variable": "cpp",
+        "cstring": "cpp",
+        "map": "cpp",
+        "future": "cpp",
+        "mutex": "cpp",
+        "semaphore": "cpp",
+        "source_location": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
+    },
+    "makefile.configureOnOpen": true,
+    "cmake.sourceDirectory": "/home/valeriy/Репозитории/Диплом/etude-language-support/etuded"
 }
