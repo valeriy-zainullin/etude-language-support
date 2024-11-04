@@ -12,6 +12,7 @@ log: ./ext_root
 etuded/build:
 	cmake -B etuded/build etuded
 
+PHONY += etuded/build/server # Всегда нужно посмотреть, надо ли пересобрать.
 etuded/build/server: | etuded/build
 	$(MAKE) -C etuded/build
 
@@ -26,3 +27,6 @@ package.vsix: package.json src/extension.ts etuded/server
 
 clean:
 	rm -rf *.vsix ext_root user_data
+
+.PHONY: $(PHONY)
+
