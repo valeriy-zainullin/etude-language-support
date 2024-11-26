@@ -6,15 +6,12 @@ all: package.vsix
 	code $(PROFILE_OPTS) --install-extension $<
 	code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_EXAMPLES_DIR) -g $(ETUDE_EXAMPLES_DIR)/10-test-shouldfail-comparison.et
 
-log: ./ext_root
-	bash -c 'cat ./ext_root/valeriy-zainullin.etude-language-support-*/lsp-server/log.txt'
-
 etuded/build:
 	cmake -B etuded/build etuded
 
 PHONY += etuded/build/server # Всегда нужно посмотреть, надо ли пересобрать.
 etuded/build/server: | etuded/build
-	$(MAKE) -C etuded/build
+	$(MAKE) -j$(nproc) -C etuded/build
 
 etuded/server: etuded/build/server
 	cp $< $@
