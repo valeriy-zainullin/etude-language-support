@@ -1,5 +1,5 @@
 PROFILE_OPTS := --extensions-dir ./ext_root --user-data-dir ./user_data
-ETUDE_EXAMPLES_DIR := ../etude/examples/test/
+ETUDE_EXAMPLES_DIR := etuded/etude/examples/test/
 
 all: package.vsix
 # Если уже есть, переустановит.
