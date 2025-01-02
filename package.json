@@ -23,7 +23,15 @@
         ],
         "extensions": [
           ".et"
-        ]
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "etude",
+        "scopeName": "source.etude",
+        "path": "etude.tmGrammar.json"
       }
     ],
     "configuration": {

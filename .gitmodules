@@ -1,3 +1,6 @@
 [submodule "etuded"]
 	path = etuded
 	url = git@github.com:valeriy-zainullin/etuded
+[submodule "et-irc"]
+	path = et-irc
+	url = git@github.com:otakubeam/et-irc.git

@@ -1,0 +1,134 @@
+{
+  "scopeName": "source.etude",
+  "patterns": [
+    { "include": "#imports" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#char-literal" },
+    { "include": "#attributes" },
+    { "include": "#type-decl" },
+    { "include": "#fun-decl" },
+    { "include": "#const-number" },
+    { "include": "#controls" },
+    { "include": "#operators" },
+    { "include": "#reserved" },
+    { "include": "#builtin" },
+    { "include": "#const-boolean" }
+  ],
+  "foldingStartMarker": "\\{\\s*$",
+  "foldingStopMarker": "^\\s*\\}$",
+  "repository": {
+    "imports": {
+      "match": "^[a-zA-Z0-9_]+;$",
+      "name": "keyword.control.import.etude"
+    },
+    "const-boolean": {
+      "match": "\\b(?:true|false)\\b",
+      "name": "constant.language.boolean.etude"
+    },
+    "controls": {
+      "match": "\\b(?:return|match|yield|then|else|for|if)\\b",
+      "name": "keyword.control"
+    },
+    "attributes": {
+      "match": "@[a-zA-Z_]\\w+",
+      "name": "support.other.attribute.etude"
+    },
+    "const-number": {
+      "match": "\\-?\\d+",
+      "name": "constant.numeric"
+    },
+    "operators": {
+      "match": "\\-|\\+|\\*|&|\\=|==|!=",
+      "name": "keyword.operator"
+    },
+    "reserved": {
+      "match": "\\b(struct|export|extern|trait|impl|unit|new|type|fun|var|sum|of)\\b",
+      "name": "keyword.other"
+    },
+    "builtin": {
+      "match": "\\b(String|Bool|Char|Unit|Int)\\b",
+      "name": "constant.language"
+    },
+    "type-decl": {
+      "begin": "\\b(type)\\b",
+      "end": "=|  $",
+      "beginCaptures": {
+        "0": { "name": "keyword.type.etude"}
+      },
+      "contentName": "entity.name.type"
+    },
+    "strings": {
+      "patterns": [
+        {
+          "end": "\"",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.etude"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\\\(?:[btnfr\\\\\"']|[0-7]{1,3}|u[0-9A-Fa-f]{4})",
+              "name": "constant.character.escape.etude"
+            },
+            {
+              "match": "\\\\.",
+              "name": "invalid.illegal.unrecognized-string-escape.etude"
+            }
+          ],
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.etude"
+            }
+          },
+          "name": "string.quoted.double.etude"
+        }
+      ]
+    },
+    "char-literal": {
+      "patterns": [
+        {
+          "end": "\\'",
+          "begin": "\\'",
+          "patterns": [
+            {
+              "match": "\\\\(?:[btnfr\\\\\"']|[0-7]{1,3}|u[0-9A-Fa-f]{4})",
+              "name": "constant.character.escape.etude"
+            },
+            {
+              "match": "\\\\.",
+              "name": "invalid.illegal.unrecognized-string-escape.etude"
+            }
+          ],
+          "name": "constant.character"
+        }
+      ]
+    },
+    "comments": {
+      "match": "#.*$",
+      "name": "comment.line.number-sign"
+    },
+    "fun-decl": {
+      "match": "\\b(fun)\\s+(\\w+)([^=]*)(?:=|;)",
+      "captures": {
+        "0": { "name": "meta.function" },
+        "1": { "name": "keyword.function.etude" },
+        "2": {
+          "patterns": [
+            { "match": "\\d\\w+", "name": "invalid.illegal.identifier.etude" },
+            { "match": "\\w+", "name": "entity.name.function.etude" }
+          ]
+        },
+        "3": {
+          "patterns": [
+            { "match": "\\b\\d\\w+\\b", "name": "invalid.illegal.identifier.etude" },
+            { "match": "\\b\\w+\\b", "name": "variable.parameter.etude" }
+          ]
+        }
+      }
+    }
+  }
+}
+  
