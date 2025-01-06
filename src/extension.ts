@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 		documentSelector: [{ scheme: 'file', language: 'etude' }], // <- etude!
 	};
 
-	let serverPath = context.asAbsolutePath(path.join('etuded', 'server'));
+	let serverPath = context.asAbsolutePath("lsp-server"); // context.asAbsolutePath(path.join('etuded', 'server'));
 	let serverOptions: ServerOptions = {
 	  command: serverPath, // module:, если бы language server был написан на nodejs typescript или javascript.
 	  transport: TransportKind.stdio,

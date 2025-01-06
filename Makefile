@@ -15,13 +15,16 @@ PHONY += etuded/build/server # Всегда нужно посмотреть, н�
 etuded/build/server: | etuded/build
 	$(MAKE) -j$(shell nproc) -C etuded/build
 
-etuded/server: etuded/build/server
+lsp-server: etuded/build/server
 	cp $< $@
+
+etude_stdlib: | etuded/etude/stdlib
+	cp -r $| $@
 
 # Не хочется каждый раз ждать eslint,
 #   потому пусть запускается только если важные
 #   файлы поменялись (те, которые мы изменяем пока).
-package.vsix: package.json src/extension.ts etuded/server
+package.vsix: package.json src/extension.ts lsp-server etude_stdlib
 	vsce package -o $@
 
 clean:

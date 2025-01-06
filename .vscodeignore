@@ -16,3 +16,5 @@ vsc-extension-quickstart.md
 **/.vscode-test.*
 **/build_vscode
 **/build
+et-irc/**
+etuded/**
