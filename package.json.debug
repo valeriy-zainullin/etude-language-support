@@ -33,7 +33,24 @@
         "scopeName": "source.etude",
         "path": "etude.tmGrammar.json"
       }
-    ]
+    ],
+    "configuration": {
+			"type": "object",
+			"title": "Example configuration",
+			"properties": {
+				"EtudeLanguageServer.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "verbose",
+					"description": "Traces the communication between VS Code and the language server."
+				}
+			}
+		}
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

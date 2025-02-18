@@ -6,10 +6,10 @@ all: package.vsix
 # Если уже есть, переустановит.
 	code $(PROFILE_OPTS) --install-extension $<
 	code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_SAMPLE_PROJ_DIR)
-	code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_EXAMPLES_DIR)
+	# code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_EXAMPLES_DIR)
 
 etuded/build:
-	cmake -B etuded/build etuded
+	cmake -B etuded/build -DCMAKE_BUILD_TYPE=Debug etuded
 
 PHONY += etuded/build/server # Всегда нужно посмотреть, надо ли пересобрать.
 etuded/build/server: | etuded/build
@@ -28,7 +28,7 @@ package.vsix: package.json src/extension.ts lsp-server etude_stdlib
 	vsce package -o $@
 
 clean:
-	rm -rf *.vsix ext_root user_data
+	rm -rf *.vsix ext_root user_data etuded/build
 
 .PHONY: $(PHONY)
 
