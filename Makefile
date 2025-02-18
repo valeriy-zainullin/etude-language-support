@@ -25,7 +25,7 @@ etude_stdlib: | etuded/etude/stdlib
 #   потому пусть запускается только если важные
 #   файлы поменялись (те, которые мы изменяем пока).
 package.vsix: package.json src/extension.ts lsp-server etude_stdlib
-	vsce package -o $@
+	npx vsce package -o $@
 
 clean:
 	rm -rf *.vsix ext_root user_data etuded/build
