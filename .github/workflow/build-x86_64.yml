@@ -1,0 +1,21 @@
+name: Build-x86_64
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up apt packages
+        run: apt update && apt install nodejs npm build-essential gcc g++ make cmake
+      - name: Set up npm packages
+        run: npm install
+      - name: Build
+        run: make
