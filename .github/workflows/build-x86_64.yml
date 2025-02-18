@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Set up apt packages
-        run: apt update && apt install nodejs npm build-essential gcc g++ make cmake
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake
       - name: Set up npm packages
         run: npm install
       - name: Build
