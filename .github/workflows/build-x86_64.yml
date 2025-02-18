@@ -22,7 +22,7 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up apt packages
-        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake libboost-dev
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake libboost-dev libboost-filesystem-dev
       - name: Set up npm packages
         run: npm install
       - name: Build
