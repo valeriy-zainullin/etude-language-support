@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Clone submodules
-        run: git submodule update --init --recursive
+        run: git submodule update --init --recursive --remote
       - name: Set up apt packages
         run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake
       - name: Set up npm packages
