@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v1
+      - name: Clone submodules
+        run: git submodule update --init --recursive
       - name: Set up apt packages
         run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake
       - name: Set up npm packages
