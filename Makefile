@@ -3,7 +3,8 @@ ETUDE_SAMPLE_PROJ_DIR := et-irc
 ETUDE_EXAMPLES_DIR := etuded/etude/examples/test/
 
 all: package.vsix
-# Если уже есть, переустановит.
+
+preview: package.vsix
 	code $(PROFILE_OPTS) --install-extension $<
 	code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_SAMPLE_PROJ_DIR)
 	# code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_EXAMPLES_DIR)
@@ -25,6 +26,7 @@ etude_stdlib: | etuded/etude/stdlib
 #   потому пусть запускается только если важные
 #   файлы поменялись (те, которые мы изменяем пока).
 package.vsix: package.json src/extension.ts lsp-server etude_stdlib
+  # Если уже есть, переустановит.
 	npx vsce package -o $@
 
 clean:
