@@ -84,7 +84,7 @@ jobs:
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
           git tag ${authored_date}-$(git rev-parse --short ${GITHUB_REF})
-          git push
+          git push --tags
       - uses: actions/create-release@v1
         id: create_release
         with:
