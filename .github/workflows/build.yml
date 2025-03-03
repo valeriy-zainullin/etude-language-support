@@ -1,0 +1,104 @@
+name: Build
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - 'master'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build-arm64:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: Set up apt packages
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake libboost-dev libboost-filesystem-dev
+      - name: Set up npm packages
+        run: npm install
+      - name: Build
+        run: make
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package.linux-arm64.vsix
+          path: package.vsix
+  build-amd64:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: Set up apt packages
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake libboost-dev libboost-filesystem-dev
+      - name: Set up npm packages
+        run: npm install
+      - name: Build
+        run: make
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package.linux-amd64.vsix
+          path: package.vsix
+  Release:
+    steps:
+      - name: release_name
+        run: |
+          authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
+          echo "::set-output name=release_name::${authored_date}-$(git rev-parse --short ${GITHUB_REF})"
+        id: version
+      - uses: actions/download-artifact@v4
+        with:
+          name: package.linux-arm64.vsix
+          path: ./package.linux-arm64.vsix
+      - uses: actions/download-artifact@v4
+        with:
+          name: package.linux-amd64.vsix
+          path: ./package.linux-amd64.vsix
+      - uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.release_name.outputs.release_name }}
+          tag_name: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: upload linux-arm64 package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./package.linux-arm64.vsix
+          asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.linux-arm64.vsix
+          asset_content_type: application/octet-stream
+      - name: upload linux-amd64 package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./package.linux-amd64.vsix
+          asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.linux-amd64.vsix
+          asset_content_type: application/octet-stream
