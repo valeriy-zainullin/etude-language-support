@@ -66,6 +66,7 @@ jobs:
       - build-arm64
       - build-amd64
     steps:
+      - uses: actions/checkout@v2
       - name: release_name
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
