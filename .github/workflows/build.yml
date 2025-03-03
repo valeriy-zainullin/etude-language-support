@@ -67,10 +67,10 @@ jobs:
       - build-amd64
     steps:
       - uses: actions/checkout@v2
-      - name: release_name
+      - name: make release name
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
-          echo "::set-output name=release_name::${authored_date}-$(git rev-parse --short ${GITHUB_REF})"
+          echo "release_name=${authored_date}-$(git rev-parse --short ${GITHUB_REF})" >> $GITHUB_OUTPUT
         id: version
       - uses: actions/download-artifact@v4
         with:
@@ -80,13 +80,18 @@ jobs:
         with:
           name: package.linux-amd64.vsix
           path: ./package.linux-amd64.vsix
+      - name: tag
+        run: |
+          authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
+          git tag ${authored_date}-$(git rev-parse --short ${GITHUB_REF})
+          git push
       - uses: actions/create-release@v1
         id: create_release
         with:
           draft: false
           prerelease: false
           release_name: ${{ steps.release_name.outputs.release_name }}
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ steps.release_name.outputs.release_name }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: upload linux-arm64 package
