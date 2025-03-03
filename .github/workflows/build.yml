@@ -60,8 +60,11 @@ jobs:
         with:
           name: package.linux-amd64.vsix
           path: package.vsix
-  Release:
+  release:
     runs-on: ubuntu-24.04
+    needs:
+      - build-arm64
+      - build-amd64
     steps:
       - name: release_name
         run: |
