@@ -75,11 +75,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: package.linux-arm64.vsix
-          path: ./package.linux-arm64.vsix
+          path: .
       - uses: actions/download-artifact@v4
         with:
           name: package.linux-amd64.vsix
-          path: ./package.linux-amd64.vsix
+          path: .
       - name: tag
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
