@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-arm64:
+  build-linux-arm64:
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +38,7 @@ jobs:
         with:
           name: package.linux-arm64.vsix
           path: package.vsix
-  build-amd64:
+  build-linux-amd64:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
@@ -63,10 +63,10 @@ jobs:
   release:
     runs-on: ubuntu-24.04
     needs:
-      - build-arm64
-      - build-amd64
+      - build-linux-arm64
+      - build-linux-amd64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.3.0
       - name: make release name
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
@@ -90,8 +90,8 @@ jobs:
         with:
           draft: false
           prerelease: false
-          release_name: ${{ steps.release_name.outputs.release_name }}
           tag_name: ${{ steps.release_name.outputs.release_name }}
+          release_name: ${{ steps.release_name.outputs.release_name }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: upload linux-arm64 package
