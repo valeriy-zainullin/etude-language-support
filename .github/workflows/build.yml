@@ -77,14 +77,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: package.linux-arm64.vsix
-          path: ./
+          path: /opt
       - name: Download package for linux-amd64
         uses: actions/download-artifact@v4
         with:
           name: package.linux-amd64.vsix
-          path: ./
+          path: /opt
       - name: List files
-        run: ls
+        run: ls /opt
       - name: tag
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
@@ -106,7 +106,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./package.linux-arm64.vsix
+          asset_path: /opt/package.linux-arm64.vsix
           asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.linux-arm64.vsix
           asset_content_type: application/octet-stream
       - name: upload linux-amd64 package
@@ -115,6 +115,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./package.linux-amd64.vsix
+          asset_path: /opt/package.linux-amd64.vsix
           asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.linux-amd64.vsix
           asset_content_type: application/octet-stream
