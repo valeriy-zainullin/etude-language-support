@@ -66,20 +66,25 @@ jobs:
       - build-linux-arm64
       - build-linux-amd64
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: make release name
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
           echo "release_name=${authored_date}-$(git rev-parse --short ${GITHUB_REF})" >> $GITHUB_OUTPUT
         id: release_name
-      - uses: actions/download-artifact@v4
+      - name: Download package for linux-arm64
+        uses: actions/download-artifact@v4
         with:
           name: package.linux-arm64.vsix
           path: ./
-      - uses: actions/download-artifact@v4
+      - name: Download package for linux-amd64
+        uses: actions/download-artifact@v4
         with:
           name: package.linux-amd64.vsix
           path: ./
+      - name: List files
+        run: ls
       - name: tag
         run: |
           authored_date=$(date -u -d @$(git --no-pager log -1 --pretty='format:%at' ${GITHUB_REF}) +%Y%m%d)
