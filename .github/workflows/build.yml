@@ -76,12 +76,12 @@ jobs:
       - name: Download package for linux-arm64
         uses: actions/download-artifact@v4
         with:
-          name: package.linux-arm64.vsix
+          name: package.linux-arm64
           path: ./
       - name: Download package for linux-amd64
         uses: actions/download-artifact@v4
         with:
-          name: package.linux-amd64.vsix
+          name: package.linux-amd64
           path: ./
       - name: List files
         run: ls /opt
@@ -99,7 +99,6 @@ jobs:
           tag_name: ${{ steps.release_name.outputs.release_name }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - run: ls
       - name: upload linux-arm64 package
         uses: actions/upload-release-asset@v1
         env:
