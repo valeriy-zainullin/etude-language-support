@@ -33,11 +33,11 @@ jobs:
       - name: Set up npm packages
         run: npm install
       - name: Build
-        run: make
+        run: make && mv package.vsix package.linux-arm64.vsix
       - uses: actions/upload-artifact@v4
         with:
-          name: package.linux-arm64.vsix
-          path: package.vsix
+          name: package.linux-arm64
+          path: package.linux-arm64.vsix
   build-linux-amd64:
     runs-on: ubuntu-24.04
     steps:
@@ -55,11 +55,11 @@ jobs:
       - name: Set up npm packages
         run: npm install
       - name: Build
-        run: make
+        run: make && mv package.vsix package.linux-amd64.vsix
       - uses: actions/upload-artifact@v4
         with:
-          name: package.linux-amd64.vsix
-          path: package.vsix
+          name: package.linux-amd64
+          path: package.linux-amd64.vsix
   release:
     runs-on: ubuntu-24.04
     needs:
