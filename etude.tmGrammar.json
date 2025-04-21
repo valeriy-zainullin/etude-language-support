@@ -1,25 +1,51 @@
 {
   "scopeName": "source.etude",
   "patterns": [
-    { "include": "#imports" },
-    { "include": "#comments" },
-    { "include": "#strings" },
-    { "include": "#char-literal" },
-    { "include": "#attributes" },
-    { "include": "#type-decl" },
-    { "include": "#fun-decl" },
-    { "include": "#const-number" },
-    { "include": "#controls" },
-    { "include": "#operators" },
-    { "include": "#reserved" },
-    { "include": "#builtin" },
-    { "include": "#const-boolean" }
+    {
+      "include": "#imports"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#char-literal"
+    },
+    {
+      "include": "#attributes"
+    },
+    {
+      "include": "#type-decl"
+    },
+    {
+      "include": "#fun-decl"
+    },
+    {
+      "include": "#const-number"
+    },
+    {
+      "include": "#controls"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#reserved"
+    },
+    {
+      "include": "#builtin"
+    },
+    {
+      "include": "#const-boolean"
+    }
   ],
   "foldingStartMarker": "\\{\\s*$",
   "foldingStopMarker": "^\\s*\\}$",
   "repository": {
     "imports": {
-      "match": "^[a-zA-Z0-9_]+;$",
+      "match": "^\\s*[a-zA-Z0-9_]+\\s*;\\s*$",
       "name": "keyword.control.import.etude"
     },
     "const-boolean": {
@@ -54,7 +80,9 @@
       "begin": "\\b(type)\\b",
       "end": "=|  $",
       "beginCaptures": {
-        "0": { "name": "keyword.type.etude"}
+        "0": {
+          "name": "keyword.type.etude"
+        }
       },
       "contentName": "entity.name.type"
     },
@@ -113,22 +141,37 @@
     "fun-decl": {
       "match": "\\b(fun)\\s+(\\w+)([^=]*)(?:=|;)",
       "captures": {
-        "0": { "name": "meta.function" },
-        "1": { "name": "keyword.function.etude" },
+        "0": {
+          "name": "meta.function"
+        },
+        "1": {
+          "name": "keyword.function.etude"
+        },
         "2": {
           "patterns": [
-            { "match": "\\d\\w+", "name": "invalid.illegal.identifier.etude" },
-            { "match": "\\w+", "name": "entity.name.function.etude" }
+            {
+              "match": "\\d\\w+",
+              "name": "invalid.illegal.identifier.etude"
+            },
+            {
+              "match": "\\w+",
+              "name": "entity.name.function.etude"
+            }
           ]
         },
         "3": {
           "patterns": [
-            { "match": "\\b\\d\\w+\\b", "name": "invalid.illegal.identifier.etude" },
-            { "match": "\\b\\w+\\b", "name": "variable.parameter.etude" }
+            {
+              "match": "\\b\\d\\w+\\b",
+              "name": "invalid.illegal.identifier.etude"
+            },
+            {
+              "match": "\\b\\w+\\b",
+              "name": "variable.parameter.etude"
+            }
           ]
         }
       }
     }
   }
 }
-  
