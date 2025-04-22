@@ -10,12 +10,11 @@ preview: package.vsix
 	# code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_EXAMPLES_DIR)
 
 etuded/build:
-	cmake -B etuded/build -DCMAKE_BUILD_TYPE=Debug -GNinja etuded
+	cmake -B etuded/build -DCMAKE_BUILD_TYPE=Debug etuded
 
 PHONY += etuded/build/server # Всегда нужно посмотреть, надо ли пересобрать.
 etuded/build/server: | etuded/build
-  # Ninja also works with MSVC, that why it was chosen.
-	ninja -C etuded/build
+	$(MAKE) -j$(shell nproc) -C etuded/build
 
 lsp-server: etuded/build/server
 	cp $< $@
