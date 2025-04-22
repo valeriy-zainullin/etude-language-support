@@ -9,9 +9,7 @@ on:
       - 'master'
 
 permissions:
-  contents:
-    - read
-    - write
+  contents: write
 
 concurrency:
   group: ${{ github.workflow }}
