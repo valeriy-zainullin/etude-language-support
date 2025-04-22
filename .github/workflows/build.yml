@@ -90,12 +90,12 @@ jobs:
           git config --global url."https://github.com/".insteadOf "git@github.com:"
           git submodule sync --recursive
           git -c protocol.version=2 submodule update --init --force --recursive --depth=1
-      - name: Set up chocolatey packages
+      - name: Set up brew packages
         run: brew install cmake make nodejs boost
       - name: Set up npm packages
         run: npm install
       - name: Build
-        run: make && mv package.vsix package.macos-amd64.vsix
+        run: CFLAGS='-Wno-unknown-warning-option' CXXFLAGS='-Wno-unknown-warning-option' make && mv package.vsix package.macos-amd64.vsix
       - uses: actions/upload-artifact@v4
         with:
           name: package.macos-amd64
@@ -110,12 +110,12 @@ jobs:
           git config --global url."https://github.com/".insteadOf "git@github.com:"
           git submodule sync --recursive
           git -c protocol.version=2 submodule update --init --force --recursive --depth=1
-      - name: Set up chocolatey packages
+      - name: Set up brew packages
         run: brew install cmake make nodejs boost
       - name: Set up npm packages
         run: npm install
       - name: Build
-        run: make && mv package.vsix package.macos-arm64.vsix
+        run: CFLAGS='-Wno-unknown-warning-option' CXXFLAGS='-Wno-unknown-warning-option' make && mv package.vsix package.macos-amd64.vsix
       - uses: actions/upload-artifact@v4
         with:
           name: package.macos-arm64
