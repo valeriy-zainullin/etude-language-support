@@ -29,7 +29,7 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up apt packages
-        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake libboost-dev libboost-filesystem-dev
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make ninja-build cmake libboost-dev libboost-filesystem-dev
       - name: Set up npm packages
         run: npm install
       - name: Build
@@ -51,7 +51,7 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up apt packages
-        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make cmake libboost-dev libboost-filesystem-dev
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make ninja-build cmake libboost-dev libboost-filesystem-dev
       - name: Set up npm packages
         run: npm install
       - name: Build
@@ -60,7 +60,7 @@ jobs:
         with:
           name: package.linux-amd64
           path: package.linux-amd64.vsix
-  build-windows:
+  build-windows-amd64:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -71,11 +71,11 @@ jobs:
           git submodule sync --recursive
           git -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up chocolatey packages
-        run: choco install cmake nodejs
+        run: choco install cmake make nodejs
       - name: Set up npm packages
         run: npm install
       - name: Build
-        run: cmake --build . && move package.vsix package.windows-amd64.vsix
+        run: make -f Makefile.windows && move package.vsix package.windows-amd64.vsix
       - uses: actions/upload-artifact@v4
         with:
           name: package.windows-amd64
@@ -132,7 +132,7 @@ jobs:
     needs:
       - build-linux-arm64
       - build-linux-amd64
-      - build-windows
+      - build-windows-amd64
       # - build-macos-amd64
       # - build-macos-arm64
     steps:
