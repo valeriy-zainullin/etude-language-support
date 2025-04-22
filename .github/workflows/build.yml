@@ -9,7 +9,9 @@ on:
       - 'master'
 
 permissions:
-  contents: write
+  contents:
+    - read
+    - write
 
 concurrency:
   group: ${{ github.workflow }}
@@ -60,6 +62,66 @@ jobs:
         with:
           name: package.linux-amd64
           path: package.linux-amd64.vsix
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: |
+          # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: Set up chocolatey packages
+        run: choco install cmake make nodejs
+      - name: Set up npm packages
+        run: npm install
+      - name: Build
+        run: make && move package.vsix package.windows-amd64.vsix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package.windows-amd64
+          path: package.windows-amd64.vsix
+  build-macos-amd64:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: |
+          # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: Set up chocolatey packages
+        run: brew install cmake make nodejs
+      - name: Set up npm packages
+        run: npm install
+      - name: Build
+        run: make && mv package.vsix package.macos-amd64.vsix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package.macos-amd64
+          path: package.macos-amd64.vsix
+  build-macos-arm64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: |
+          # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: Set up chocolatey packages
+        run: brew install cmake make nodejs
+      - name: Set up npm packages
+        run: npm install
+      - name: Build
+        run: make && mv package.vsix package.macos-arm64.vsix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package.macos-arm64
+          path: package.macos-arm64.vsix
   release:
     runs-on: ubuntu-24.04
     needs:
@@ -82,6 +144,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: package.linux-amd64
+          path: ./
+      - name: Download package for windows-amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: package.windows-amd64
+          path: ./
+      - name: Download package for macos-amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: package.macos-amd64
+          path: ./
+      - name: Download package for macos-arm64
+        uses: actions/download-artifact@v4
+        with:
+          name: package.macos-arm64
           path: ./
       - name: List files
         run: ls /opt
@@ -116,4 +193,31 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./package.linux-amd64.vsix
           asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.linux-amd64.vsix
+          asset_content_type: application/octet-stream
+      - name: upload windows-amd64 package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./package.windows-amd64.vsix
+          asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.windows-amd64.vsix
+          asset_content_type: application/octet-stream
+      - name: upload macos-amd64 package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./package.macos-amd64.vsix
+          asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.macos-amd64.vsix
+          asset_content_type: application/octet-stream
+      - name: upload macos-arm64 package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./package.macos-arm64.vsix
+          asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.macos-arm64.vsix
           asset_content_type: application/octet-stream
