@@ -91,7 +91,7 @@ jobs:
           git submodule sync --recursive
           git -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up chocolatey packages
-        run: brew install cmake make nodejs
+        run: brew install cmake make nodejs boost
       - name: Set up npm packages
         run: npm install
       - name: Build
@@ -111,7 +111,7 @@ jobs:
           git submodule sync --recursive
           git -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up chocolatey packages
-        run: brew install cmake make nodejs
+        run: brew install cmake make nodejs boost
       - name: Set up npm packages
         run: npm install
       - name: Build
@@ -125,6 +125,9 @@ jobs:
     needs:
       - build-linux-arm64
       - build-linux-amd64
+      - build-windows
+      - build-macos-amd64
+      - build-macos-arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v2
