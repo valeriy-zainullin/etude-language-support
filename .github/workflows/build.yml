@@ -60,26 +60,26 @@ jobs:
         with:
           name: package.linux-amd64
           path: package.linux-amd64.vsix
-  build-windows-amd64:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Checkout submodules
-        run: |
-          # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
-          git submodule sync --recursive
-          git -c protocol.version=2 submodule update --init --force --recursive --depth=1
-      - name: Set up chocolatey packages
-        run: choco install cmake make nodejs
-      - name: Set up npm packages
-        run: npm install
-      - name: Build
-        run: make -f Makefile.windows && move package.vsix package.windows-amd64.vsix
-      - uses: actions/upload-artifact@v4
-        with:
-          name: package.windows-amd64
-          path: package.windows-amd64.vsix
+  # build-windows-amd64:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Checkout submodules
+  #       run: |
+  #         # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
+  #         git config --global url."https://github.com/".insteadOf "git@github.com:"
+  #         git submodule sync --recursive
+  #         git -c protocol.version=2 submodule update --init --force --recursive --depth=1
+  #     - name: Set up chocolatey packages
+  #       run: choco install cmake make nodejs
+  #     - name: Set up npm packages
+  #       run: npm install
+  #     - name: Build
+  #       run: make -f Makefile.windows && move package.vsix package.windows-amd64.vsix
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: package.windows-amd64
+  #         path: package.windows-amd64.vsix
   # Нужно собирать boost 1.76 из исходников, в brew очень новая версия, с ней не собирается liblsp.
   # build-macos-amd64:
   #   runs-on: macos-13
@@ -132,7 +132,7 @@ jobs:
     needs:
       - build-linux-arm64
       - build-linux-amd64
-      - build-windows-amd64
+      # - build-windows-amd64
       # - build-macos-amd64
       # - build-macos-arm64
     steps:
@@ -153,11 +153,11 @@ jobs:
         with:
           name: package.linux-amd64
           path: ./
-      - name: Download package for windows-amd64
-        uses: actions/download-artifact@v4
-        with:
-          name: package.windows-amd64
-          path: ./
+      # - name: Download package for windows-amd64
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: package.windows-amd64
+      #     path: ./
       # - name: Download package for macos-amd64
       #   uses: actions/download-artifact@v4
       #   with:
@@ -202,15 +202,15 @@ jobs:
           asset_path: ./package.linux-amd64.vsix
           asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.linux-amd64.vsix
           asset_content_type: application/octet-stream
-      - name: upload windows-amd64 package
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./package.windows-amd64.vsix
-          asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.windows-amd64.vsix
-          asset_content_type: application/octet-stream
+      # - name: upload windows-amd64 package
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./package.windows-amd64.vsix
+      #     asset_name: etude-vscode.${{ steps.release_name.outputs.release_name }}.windows-amd64.vsix
+      #     asset_content_type: application/octet-stream
       # - name: upload macos-amd64 package
       #   uses: actions/upload-release-asset@v1
       #   env:
