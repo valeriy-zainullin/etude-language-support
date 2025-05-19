@@ -29,11 +29,13 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up apt packages
-        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make ninja-build cmake libboost-dev libboost-filesystem-dev
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make ninja-build cmake
       - name: Set up npm packages
         run: npm install
       - name: Build
         run: make && mv package.vsix package.linux-arm64.vsix
+      - name: List shared object dependencies (should be empty)
+        run: ldd etuded/build/server
       - uses: actions/upload-artifact@v4
         with:
           name: package.linux-arm64
@@ -51,11 +53,13 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
       - name: Set up apt packages
-        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make ninja-build cmake libboost-dev libboost-filesystem-dev
+        run: sudo apt update && sudo apt install nodejs npm build-essential gcc g++ make ninja-build cmake
       - name: Set up npm packages
         run: npm install
       - name: Build
         run: make && mv package.vsix package.linux-amd64.vsix
+      - name: List shared object dependencies (should be empty)
+        run: ldd etuded/build/server
       - uses: actions/upload-artifact@v4
         with:
           name: package.linux-amd64

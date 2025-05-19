@@ -7,3 +7,4 @@ user_data/
 ext_root/
 etude_stdlib/
 lsp-server
+debug-build
