@@ -1,3 +1,13 @@
-Package for Etude programming language.
+Package for [Etude programming language](https://github.com/otakubeam/etude).
+
+[Demonstration (video)](https://github.com/valeriy-zainullin/etude-language-support/blob/)
+
+### Installation
 
 [Installation (video)](https://github.com/valeriy-zainullin/etude-language-support/blob/e57585f405beee255be8f222f03cb77d4e455424/Installation_instruction.mp4)
+
+Also you can install using GUI by doing the following steps:
+* open VS code
+* navigate to extensions tab (Ctrl+Shif+N) in sidepanel
+* click on three dots button
+* select "Install from VSIX"
