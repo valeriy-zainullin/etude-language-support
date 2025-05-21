@@ -1,6 +1,6 @@
 Package for [Etude programming language](https://github.com/otakubeam/etude).
 
-[Demonstration (video)](https://github.com/valeriy-zainullin/etude-language-support/blob/)
+[Demonstration (video)](https://github.com/valeriy-zainullin/etude-language-support/blob/357d8dcda3756247e9ffc999878b06720baa38fe/demo.mp4)
 
 ### Installation
 
