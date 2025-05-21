@@ -167,21 +167,21 @@ jobs:
         with:
           name: package.linux-amd64
           path: ./
-      # - name: Download package for windows-amd64
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: package.windows-amd64
-      #     path: ./
-      # - name: Download package for macos-amd64
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: package.macos-amd64
-      #     path: ./
-      # - name: Download package for macos-arm64
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: package.macos-arm64
-      #     path: ./
+      - name: Download package for windows-amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: package.windows-amd64
+          path: ./
+      - name: Download package for macos-amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: package.macos-amd64
+          path: ./
+      - name: Download package for macos-arm64
+        uses: actions/download-artifact@v4
+        with:
+          name: package.macos-arm64
+          path: ./
       - name: List files
         run: ls /opt
       - name: tag
