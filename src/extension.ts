@@ -8,6 +8,7 @@ import {
 	TransportKind
   } from 'vscode-languageclient/node';
 import * as path from 'path';
+import process from 'process';
 
 let client: LanguageClient;
 
@@ -34,7 +35,14 @@ export function activate(context: vscode.ExtensionContext) {
 		documentSelector: [{ scheme: 'file', language: 'etude' }], // <- etude!
 	};
 
-	let serverPath = context.asAbsolutePath("lsp-server"); // context.asAbsolutePath(path.join('etuded', 'server'));
+	let serverPath = (() => {
+		if (process.platform === "win32") {
+			return context.asAbsolutePath("lsp-server.exe");
+		} else {
+			return context.asAbsolutePath("lsp-server"); // context.asAbsolutePath(path.join('etuded', 'server'));
+		}
+	})();
+
 	let serverOptions: ServerOptions = {
 	  command: serverPath, // module:, если бы language server был написан на nodejs typescript или javascript.
 	  transport: TransportKind.stdio,
