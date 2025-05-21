@@ -1,3 +1,4 @@
+build_vscode/
 out
 dist
 node_modules
@@ -7,4 +8,5 @@ user_data/
 ext_root/
 etude_stdlib/
 lsp-server
+lsp-server.exe
 debug-build

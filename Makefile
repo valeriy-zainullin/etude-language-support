@@ -30,7 +30,7 @@ package.vsix: package.json src/extension.ts lsp-server etude_stdlib
 	npx vsce package -o $@
 
 clean:
-	rm -rf *.vsix ext_root user_data etuded/build
+	rm -rf *.vsix ext_root user_data etuded/build lsp_server
 
 .PHONY: $(PHONY)
 

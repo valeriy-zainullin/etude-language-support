@@ -4,20 +4,16 @@ ETUDE_EXAMPLES_DIR := etuded/etude/examples/test/
 
 all: package.vsix
 
-preview: package.vsix
-	code $(PROFILE_OPTS) --install-extension $<
-	code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_SAMPLE_PROJ_DIR)
-	# code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_EXAMPLES_DIR)
-
 etuded/build:
-	cmake -B etuded/build -DCMAKE_BUILD_TYPE=Debug etuded
+	bash etuded/configure_cross_windows.bash -B etuded/build -DCMAKE_BUILD_TYPE=$(shell ([ -f debug-build ] && echo 'Debug') || echo 'Release') etuded
 
 PHONY += etuded/build/server # Всегда нужно посмотреть, надо ли пересобрать.
-etuded/build/server: | etuded/build
-	cmake --build etuded/build
+etuded/build/server.exe: | etuded/build
+	$(MAKE) -j$(shell nproc) -C etuded/build
 
-lsp-server: etuded/build/server
+lsp-server.exe: etuded/build/server.exe
 	cp $< $@
+	# bring dlls as well.
 
 etude_stdlib: | etuded/etude/stdlib
 	cp -r $| $@
@@ -25,12 +21,12 @@ etude_stdlib: | etuded/etude/stdlib
 # Не хочется каждый раз ждать eslint,
 #   потому пусть запускается только если важные
 #   файлы поменялись (те, которые мы изменяем пока).
-package.vsix: package.json src/extension.ts lsp-server etude_stdlib
-  # Если уже есть, переустановит.
+package.vsix: package.json src/extension.ts lsp-server.exe etude_stdlib
+	# Если уже есть, переустановит.
 	npx vsce package -o $@
 
 clean:
-	rm -rf *.vsix ext_root user_data etuded/build
+	rm -rf *.vsix ext_root user_data etuded/build lsp_server.exe
 
 .PHONY: $(PHONY)
 
