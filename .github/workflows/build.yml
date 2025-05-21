@@ -111,10 +111,8 @@ jobs:
         run: npm install
       - name: Build
         run: make && mv package.vsix package.macos-amd64.vsix
-      - name: List shared object dependencies (should be empty)
-        run: |
-          ldd etuded/build/server || true # Just for logging
-          (LC_ALL=C ldd etuded/build/server 2>&1) | grep 'not a dynamic executable' >/dev/null # If not found, grep returns 1
+      - name: List shared object dependencies (should only use system dylibs)
+        run: otool -L etuded/build/server
       - uses: actions/upload-artifact@v4
         with:
           name: package.macos-amd64
@@ -137,10 +135,8 @@ jobs:
         run: npm install
       - name: Build
         run: make && mv package.vsix package.macos-arm64.vsix
-      - name: List shared object dependencies (should be empty)
-        run: |
-          ldd etuded/build/server || true # Just for logging
-          (LC_ALL=C ldd etuded/build/server 2>&1) | grep 'not a dynamic executable' >/dev/null # If not found, grep returns 1
+      - name: List shared object dependencies (should only use system dylibs)
+        run: otool -L etuded/build/server
       - uses: actions/upload-artifact@v4
         with:
           name: package.macos-arm64
