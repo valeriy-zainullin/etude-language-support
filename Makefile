@@ -10,7 +10,7 @@ preview: package.vsix
 	# code -w $(PROFILE_OPTS) --disable-workspace-trust -a $(ETUDE_EXAMPLES_DIR)
 
 etuded/build:
-	cmake -B etuded/build -DCMAKE_BUILD_TYPE=$(shell ([ -f debug-build ] && echo 'Debug') || echo 'Release') etuded
+	cmake -B etuded/build -DCMAKE_BUILD_TYPE=Debug etuded
 
 PHONY += etuded/build/server # Всегда нужно посмотреть, надо ли пересобрать.
 etuded/build/server: | etuded/build

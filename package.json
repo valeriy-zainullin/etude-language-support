@@ -1,7 +1,7 @@
 {
   "name": "etude-language-support",
   "displayName": "Etude language support",
-	"publisher": "valeriy-zainullin",
+  "publisher": "valeriy-zainullin",
   "description": "Support for etude programming language",
   "version": "0.0.1",
   "engines": {
@@ -33,7 +33,23 @@
         "scopeName": "source.etude",
         "path": "etude.tmGrammar.json"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "configuration",
+      "properties": {
+        "EtudeLanguageServer.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "verbose"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

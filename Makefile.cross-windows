@@ -5,7 +5,7 @@ ETUDE_EXAMPLES_DIR := etuded/etude/examples/test/
 all: package.vsix
 
 etuded/build:
-	bash etuded/configure_cross_windows.bash -B etuded/build -DCMAKE_BUILD_TYPE=$(shell ([ -f debug-build ] && echo 'Debug') || echo 'Release') etuded
+	bash etuded/configure_cross_windows.bash -B etuded/build -DCMAKE_BUILD_TYPE=Debug etuded
 
 PHONY += etuded/build/server # Всегда нужно посмотреть, надо ли пересобрать.
 etuded/build/server.exe: | etuded/build
