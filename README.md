@@ -1,4 +1,4 @@
-Package for [Etude programming language](https://github.com/otakubeam/etude).
+VS code extension for [Etude programming language](https://github.com/otakubeam/etude).
 
 [Demonstration (video)](https://media.githubusercontent.com/media/valeriy-zainullin/etude-language-support/357d8dcda3756247e9ffc999878b06720baa38fe/demo.mp4)
 
